@@ -107,5 +107,5 @@ if __name__ == '__main__':
 
 
         image = Image.open(uploaded_file.read())
-        image = smart_crop(image)
+        #image = smart_crop(image)
         st.image(image, caption = "crop image")
