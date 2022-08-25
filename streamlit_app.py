@@ -141,5 +141,5 @@ if __name__ == '__main__':
         bytes_data = uploaded_file.read()
         st.image(bytes_data, caption='Load image')
         st.write("filename:", uploaded_file.name)
-        st.image(smart_crop(bytes_data), caption='Load image')
+        st.image(smart_crop(uploaded_file), caption='Load image')
         #st.write(bytes_data)
