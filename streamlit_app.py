@@ -142,17 +142,14 @@ def load_image(image_file):
 
 
 if __name__ == '__main__':
-    st.title("File Upload Tutorial")
+    menu = ['Image Detection', 'Video Detection']
+	choice = st.sidebar.selectbox('Menu',menu)
 
-	choice = st.sidebar.selectbox("Menu")
-
-	if choice == "Image":
-		st.subheader("Image")
-    	image_file = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
-
+	if choice == 'Image Detection':
+		st.subheader('**Face Mask Detection**')
+		image_file = st.file_uploader("Upload an image", type=['png', 'jpg', 'jpeg'])
+        		
 		if image_file is not None:
-      		file_details = {"filename":image_file.name,     
-                      "filetype":image_file.type,
-                      "filesize":image_file.size}
-      		st.write(file_details)
-      		st.image(load_image(image_file),width=250)
+			our_image = Image.open(image_file)
+			st.text("Original Image")
+			st.image(our_image)
