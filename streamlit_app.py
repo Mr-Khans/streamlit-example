@@ -19,8 +19,7 @@ list_score = []
 list_mask = []
 list_all = []
 
-def smart_crop(path):
-    img = cv2.imread(path)
+def smart_crop(img):
     gry = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(gry,(3,3), 0)
     th = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY)[1]
@@ -142,4 +141,5 @@ if __name__ == '__main__':
         bytes_data = uploaded_file.read()
         st.image(bytes_data, caption='Load image')
         st.write("filename:", uploaded_file.name)
+        st.image(smart_crop(bytes_data), caption='Load image')
         #st.write(bytes_data)
