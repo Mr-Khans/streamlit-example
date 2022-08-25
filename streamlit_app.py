@@ -105,6 +105,7 @@ def azure_result(image_name, image):
 def main():
   st.title('Detecting Pathologies Through Computer Vision in Ultrasound')
   image = read_image('image')
+  image = smart_crop(image)
   image.show()
 
 if __name__ == '__main__':  
