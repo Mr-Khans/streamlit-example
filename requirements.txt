@@ -4,3 +4,4 @@ streamlit
 imagehash
 opencv-python
 pillow
+matplotlib
