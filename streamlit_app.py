@@ -7,19 +7,6 @@ import streamlit as st
 import difflib
 from PIL import Image
 import imagehash
-import cv2
-import matplotlib.pyplot as plt
-import glob
-import os
-from io import BytesIO
-import requests
-import openpyxl
-from openpyxl import Workbook
-import numpy as np
-import pandas as pd
-import xlrd
-import xlsxwriter
-from datetime import datetime
 
 
 """
