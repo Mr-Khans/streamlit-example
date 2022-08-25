@@ -103,7 +103,6 @@ def azure_result(image_name, image):
     img2 = img.crop((bbox[-1][0], bbox[-1][1], bbox[-1][4], bbox[-1][5]))
 
 def main():
-  st.set_page_config(page_title='Omdena Envisionit', page_icon=None, layout='centered', initial_sidebar_state='auto')
   st.title('Detecting Pathologies Through Computer Vision in Ultrasound')
   image = read_image('image')
   image.show()
