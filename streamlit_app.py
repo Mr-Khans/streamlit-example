@@ -106,8 +106,7 @@ if __name__ == '__main__':
     uploaded_files = st.file_uploader("Choose a Image file", accept_multiple_files=True)
     for uploaded_file in uploaded_files:
         bytes_data = uploaded_file.read()
-        img = cv2.imread(uploaded_file, 3)
         st.image(bytes_data, caption='Load image')
         st.write("filename:", uploaded_file.name)
-        st.image(smart_crop(bytes_data), caption='Load image')
+        
         #st.write(bytes_data)
