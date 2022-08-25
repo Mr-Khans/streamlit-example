@@ -4,11 +4,3 @@ streamlit
 imagehash
 difflib
 pillow
-opencv-python
-matlpotlib
-requests
-openpyxl
-XlsxWriter
-numpy
-glob
-os
