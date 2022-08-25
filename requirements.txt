@@ -2,5 +2,4 @@ altair
 pandas
 streamlit
 imagehash
-difflib
 pillow
