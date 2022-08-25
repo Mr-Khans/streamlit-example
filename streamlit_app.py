@@ -4,7 +4,7 @@ import altair as alt
 import math
 import pandas as pd
 import streamlit as st
-
+import os
 from PIL import Image
 
 
@@ -56,40 +56,13 @@ def get_img(image, size=(100, 100)):
     return Image.open(temp)
 
 
-def insert_row(ws, image_1, image_2, name, num, num_2,num_3,num_4,num_5, size=(200,200)):
-    img_1 = openpyxl.drawing.image.Image(get_img(image_1, size=size))
-    img_2 = openpyxl.drawing.image.Image(get_img(image_2, size=size))
-    row_num = ws.max_row + 1
-    cell_addr_1 = f"A{row_num}"
-    img_1.anchor = cell_addr_1
-    ws.add_image(img_1)
-    
-    row_num = ws.max_row + 1
-    cell_addr_2 = f"B{row_num}"
-    img_2.anchor = cell_addr_2
-    ws.add_image(img_2)
-    ws[f"C{row_num}"] = name
-    ws[f"D{row_num}"] = num
-    ws[f"E{row_num}"] = num_2
-    ws[f"F{row_num}"] = num_3
-    ws[f"G{row_num}"] = num_4
-    ws[f"H{row_num}"] = num_5
-    ws.row_dimensions[row_num].height = int(size[1] * .8)
-    ws.column_dimensions["A"].width = int(size[0] * .2)
-    ws.column_dimensions["B"].width = int(size[0] * .2)
+
 
 
 def hash_check_4(path_1,path_2,hash_size):
     img1 = smart_crop(path_1)
     img2 = smart_crop(path_2)
 
-    # hash_a = imagehash.average_hash(img1,hash_size)
-    # otherhash = imagehash.average_hash(img2,hash_size)
-    # delta_1 = hash_a - otherhash
-
-    # hash_p = imagehash.phash(img1,hash_size)
-    # otherhash_p = imagehash.phash(img2,hash_size)
-    # delta_2 = hash_p - otherhash_p
 
     hash_d = imagehash.dhash(img1,hash_size)
     otherhash_d = imagehash.dhash(img2,hash_size)
@@ -101,12 +74,6 @@ def hash_check_4(path_1,path_2,hash_size):
 
     av = ( delta_5 + delta_4)/2 
     print("AVG: ",av)
-    plt.subplot(121)
-    plt.imshow(img1)
-    plt.subplot(122)
-    plt.imshow(img2)
-
-    plt.show()
     return av, delta_5, delta_4
 
 def check_masks_l(path_one_mask, path_all_mask,hash_count):
