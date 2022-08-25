@@ -69,15 +69,6 @@ def read_image(name):
     return im
 
 
-def show_image(image, mask):
-    mask = cv2.cvtColor(np.array(mask), cv2.COLOR_BGR2GRAY)
-    cnts,_= cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-    _bbAndMask(image, cnts)
-    _heatmap(image, cnts)
-
-
-
-
 def hash_check_4(path_1,path_2,hash_size):
     img1 = smart_crop(path_1)
     img2 = smart_crop(path_2)
@@ -115,9 +106,7 @@ def main():
   st.set_page_config(page_title='Omdena Envisionit', page_icon=None, layout='centered', initial_sidebar_state='auto')
   st.title('Detecting Pathologies Through Computer Vision in Ultrasound')
   image = read_image('image')
-  mask = read_image('mask')
-  if image and mask:
-    show_image(image, mask)
+  image.show()
 
 if __name__ == '__main__':  
     main()
