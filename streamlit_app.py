@@ -20,9 +20,9 @@ list_mask = []
 list_all = []
 
 def smart_crop(img):
-    #gry = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    #blur = cv2.GaussianBlur(gry,(3,3), 0)
-    th = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY)[1]
+    gry = cv2.cvtColor(img, 0)
+    blur = cv2.GaussianBlur(gry,(3,3), 0)
+    th = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY)[1]
     coords = cv2.findNonZero(th)
     x,y,w,h = cv2.boundingRect(coords)
     image = cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 0)
