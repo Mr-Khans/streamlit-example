@@ -142,8 +142,9 @@ def load_image(image_file):
 
 
 if __name__ == '__main__':  
-    uploaded_files = st.file_uploader("Choose a CSV file", accept_multiple_files=True)
+    uploaded_files = st.file_uploader("Choose a Image file", accept_multiple_files=True)
     for uploaded_file in uploaded_files:
         bytes_data = uploaded_file.read()
+        st.image(bytes_data, caption='Load image')
         st.write("filename:", uploaded_file.name)
         st.write(bytes_data)
