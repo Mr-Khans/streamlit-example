@@ -107,6 +107,8 @@ if __name__ == '__main__':
     for uploaded_file in uploaded_files:
         bytes_data = uploaded_file.read()
         st.image(bytes_data, caption='Load image')
-        st.write("filename:", uploaded_file.name)
-        st.write("crop:", smart_crop(uploaded_file))
+
+        st.image(smart_crop(bytes_data), caption = "crop image")
+        #st.write("filename:", uploaded_file.name)
+        #st.write("crop:", smart_crop(uploaded_file))
         #st.write(bytes_data)
