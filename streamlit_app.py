@@ -6,6 +6,7 @@ import pandas as pd
 import streamlit as st
 import os
 from PIL import Image
+import matplotlib.pyplot as plt
 
 
 """
@@ -101,6 +102,10 @@ def load_image(image_file):
 	img = Image.open(image_file)
 	return img
 
+def azure_result(image_name, image):
+    img = Image.open(image)
+    img2 = img.crop((bbox[-1][0], bbox[-1][1], bbox[-1][4], bbox[-1][5]))
+
 
 if __name__ == '__main__':  
     uploaded_files = st.file_uploader("Choose a Image file", accept_multiple_files=True)
@@ -112,3 +117,7 @@ if __name__ == '__main__':
         #st.write("filename:", uploaded_file.name)
         #st.write("crop:", smart_crop(uploaded_file))
         #st.write(bytes_data)
+        image = Image.open(uploaded_file) #Image name
+        fig = plt.figure()
+        plt.imshow(image)
+        st.pyplot(fig)
