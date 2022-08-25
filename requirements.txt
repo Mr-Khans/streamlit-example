@@ -2,6 +2,6 @@ altair
 pandas
 streamlit
 imagehash
-opencv-python
+opencv-contrib-python-headless
 pillow
 matplotlib
