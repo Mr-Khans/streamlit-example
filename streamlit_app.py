@@ -24,6 +24,7 @@ list_mask = []
 list_all = []
 
 def smart_crop(img):
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
     gry = cv2.cvtColor(img, cv2.IMREAD_GRAYSCALE)
     blur = cv2.GaussianBlur(gry,(3,3), 0)
     th = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY)[1]
@@ -105,7 +106,7 @@ if __name__ == '__main__':
 
         st.image(smart_crop(bytes_data), caption = "crop image")
 
-
-        image = Image.open(uploaded_file.read())
-        #image = smart_crop(image)
+        image = Image.fromarray(uploaded_file.read())
+        #image = Image.open(uploaded_file.read())
+        image = smart_crop(image)
         st.image(image, caption = "crop image")
