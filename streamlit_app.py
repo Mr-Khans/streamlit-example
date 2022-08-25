@@ -61,6 +61,20 @@ def get_img(image, size=(100, 100)):
     return Image.open(temp)
 
 
+def read_image(name):
+  image = st.file_uploader("Upload an "+ name, type=["png", "jpg", "jpeg"])
+  if image:
+    im = Image.open(image)
+    im.filename = image.name
+    return im
+
+
+def show_image(image, mask):
+    mask = cv2.cvtColor(np.array(mask), cv2.COLOR_BGR2GRAY)
+    cnts,_= cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    _bbAndMask(image, cnts)
+    _heatmap(image, cnts)
+
 
 
 
@@ -97,16 +111,25 @@ def azure_result(image_name, image):
     img = Image.open(image)
     img2 = img.crop((bbox[-1][0], bbox[-1][1], bbox[-1][4], bbox[-1][5]))
 
+def main():
+  st.set_page_config(page_title='Omdena Envisionit', page_icon=None, layout='centered', initial_sidebar_state='auto')
+  st.title('Detecting Pathologies Through Computer Vision in Ultrasound')
+  image = read_image('image')
+  mask = read_image('mask')
+  if image and mask:
+    show_image(image, mask)
 
 if __name__ == '__main__':  
-    uploaded_files = st.file_uploader("Choose a Image file", accept_multiple_files=True)
-    for uploaded_file in uploaded_files:
-        bytes_data = uploaded_file.read()
-        st.image(bytes_data, caption='Load image')
+    main()
 
-        st.image(smart_crop(bytes_data), caption = "crop image")
+    # uploaded_files = st.file_uploader("Choose a Image file", accept_multiple_files=True)
+    # for uploaded_file in uploaded_files:
+    #     bytes_data = uploaded_file.read()
+    #     st.image(bytes_data, caption='Load image')
 
-        image = Image.fromarray(uploaded_file.read())
-        #image = Image.open(uploaded_file.read())
-        image = smart_crop(image)
-        st.image(image, caption = "crop image")
+    #     st.image(smart_crop(bytes_data), caption = "crop image")
+
+    #     image = Image.fromarray(uploaded_file.read())
+    #     #image = Image.open(uploaded_file.read())
+    #     image = smart_crop(image)
+    #     st.image(image, caption = "crop image")
