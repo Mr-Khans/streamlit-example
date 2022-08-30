@@ -155,8 +155,8 @@ def evaluation_(org_img, pred_img):
     width, height = 100,100
     dim = (width, height)
 # resize image
-    #resized_1 = cv2.resize(org_img, dim, interpolation = cv2.INTER_AREA)
-    #resized_2 = cv2.resize(pred_img, dim, interpolation = cv2.INTER_AREA)
+    resized_1 = cv2.resize(org_img, dim, interpolation = cv2.INTER_AREA)
+    resized_2 = cv2.resize(pred_img, dim, interpolation = cv2.INTER_AREA)
     out_value = float(rmse(org_img, pred_img))
     output = out_value
     #print(output)
@@ -207,20 +207,21 @@ def main_loop():
         return None
 
     original_image = Image.open(image_file)
-    st.text("Result RMSE")
-    st.text(float(evaluation(image_file,image_file)))
+    #st.text("Result RMSE")
+    #st.text(float(evaluation(image_file,image_file)))
     original_image = np.array(original_image)
+    new_imamge = np.array(original_image)
 
 
-
-    processed_image = blur_image(original_image, blur_rate)
-    processed_image = brighten_image(processed_image, brightness_amount)
+    processed_image = evaluation_(original_image,new_imamge)
+    processed_image = evaluation_(processed_image, new_imamge)
 
     if apply_enhancement_filter:
         processed_image = enhance_details(processed_image)
 
     st.text("Original Image vs Processed Image")
     st.image([original_image, processed_image])
+
 
 
 if __name__ == '__main__':
