@@ -179,3 +179,5 @@ def evaluation_(org_img_path: str, pred_img):
 
 #result = (evaluation("/content/1.jpg","/content/_0101_01_l.png"))
 #print(result)
+
+print("hello world")
