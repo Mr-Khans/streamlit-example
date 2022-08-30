@@ -206,7 +206,7 @@ def main_loop():
     original_image = Image.open(image_file)
     original_image = np.array(original_image)
     st.text("Result RMSE")
-    st.text(float(evaluation_(original_image,original_image)))
+    st.text(float(evaluation(image_file,image_file)))
 
     processed_image = blur_image(original_image, blur_rate)
     processed_image = brighten_image(processed_image, brightness_amount)
