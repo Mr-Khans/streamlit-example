@@ -130,7 +130,7 @@ def rmse(org_img: np.ndarray, pred_img: np.ndarray, max_p: int = 4095) -> float:
 
 
 def read_image(path: str):
-    return cv2.imread(path,cv2.IMREAD_COLOR)
+    return Image.open(path)
 
 
 def evaluation(org_img_path: str, pred_img_path: str):
