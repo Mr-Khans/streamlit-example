@@ -177,5 +177,5 @@ def evaluation_(org_img_path: str, pred_img):
 #   return(resized)
 
 
-result = (evaluation("/content/1.jpg","/content/_0101_01_l.png"))
-print(result)
+#result = (evaluation("/content/1.jpg","/content/_0101_01_l.png"))
+#print(result)
