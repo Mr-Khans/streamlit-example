@@ -140,9 +140,12 @@ def evaluation(org_img_path: str, pred_img_path: str):
     width, height = 100,100
     dim = (width, height)
 # resize image
-    resized_1 = cv2.resize(org_img, dim, interpolation = cv2.INTER_AREA)
-    resized_2 = cv2.resize(pred_img, dim, interpolation = cv2.INTER_AREA)
-    out_value = float(rmse(resized_1, resized_2))
+
+    res_1 = org_img.resize(dim, Image.ANTIALIAS)
+    res_2 = pred_img, dim, interpolation = cv2.INTER_AREA
+    # resized_1 = cv2.resize(org_img, dim, interpolation = cv2.INTER_AREA)
+    # resized_2 = cv2.resize(pred_img, dim, interpolation = cv2.INTER_AREA)
+    out_value = float(rmse(res_1, res_2))
     output = out_value
     #print(output)
     return output
