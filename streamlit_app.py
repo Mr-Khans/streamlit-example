@@ -181,38 +181,16 @@ def evaluation_(org_img, pred_img):
 
 #result = (evaluation("/content/1.jpg","/content/_0101_01_l.png"))
 #print(result)
-STYLE = """
-<style>
-img {
-    max-width: 100%;
-}
-</style>
-"""
- 
- 
-class FileUpload(object):
- 
-    def __init__(self):
-        self.fileTypes = ["csv", "png", "jpg"]
- 
-    def run(self):
-        """
-        Upload File on Streamlit Code
-        :return:
-        """
-        st.info(__doc__)
-        st.markdown(STYLE, unsafe_allow_html=True)
-        file = st.file_uploader("Upload file", type=self.fileTypes)
-        show_file = st.empty()
-        if not file:
-            show_file.info("Please upload a file of type: " + ", ".join(["csv", "png", "jpg"]))
-            return
-        content = file.getvalue()
-        if isinstance(file, BytesIO):
-            show_file.image(file)
-            st.write(evaluation_(file,file))
- 
- 
-if __name__ ==  "__main__":
-    helper = FileUpload()
-    helper.run()
+
+
+st.title("OpenCV Demo App")
+st.subheader("This app allows you to play with Image filters!")
+st.text("We use OpenCV and Streamlit for this demo")
+if st.checkbox("Main Checkbox"):
+    st.text("Check Box Active")
+
+slider_value = st.slider("Slider", min_value=0.5, max_value=3.5)
+st.text(f"Slider value is {slider_value}")
+
+st.sidebar.text("text on side panel")
+st.sidebar.checkbox("Side Panel Checkbox")
