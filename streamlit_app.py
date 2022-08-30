@@ -142,7 +142,7 @@ def evaluation(org_img_path: str, pred_img_path: str):
 # resize image
 
     res_1 = org_img.resize(dim, Image.ANTIALIAS)
-    res_2 = pred_img, dim, interpolation = cv2.INTER_AREA
+    res_2 = pred_img.resize(dim, Image.ANTIALIAS)
     # resized_1 = cv2.resize(org_img, dim, interpolation = cv2.INTER_AREA)
     # resized_2 = cv2.resize(pred_img, dim, interpolation = cv2.INTER_AREA)
     out_value = float(rmse(res_1, res_2))
