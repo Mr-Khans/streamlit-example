@@ -1,7 +1,9 @@
 altair
-pandas
+scipy
 streamlit
-imagehash
 opencv-contrib-python-headless
-pillow
+phasepack
 matplotlib
+scikit-image
+rasterio
+pillow

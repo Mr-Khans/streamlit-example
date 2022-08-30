@@ -1,14 +1,17 @@
 # from ast import If, main
 from collections import namedtuple
 import altair as alt
-import math
-import pandas as pd
 import streamlit as st
 import os
 import glob
 import cv2
 from PIL import Image
 import matplotlib.pyplot as plt
+import math
+import numpy as np
+from skimage.metrics import structural_similarity
+import phasepack.phasecong as pc
+import rasterio
 
 
 
@@ -24,7 +27,6 @@ list_mask = []
 list_all = []
 
 def smart_crop(img):
-    img = Image.fromarray(img)
     gry = cv2.cvtColor(img, cv2.IMREAD_GRAYSCALE)
     blur = cv2.GaussianBlur(gry,(3,3), 0)
     th = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY)[1]
@@ -94,31 +96,86 @@ def check_masks_l(path_one_mask, path_all_mask,hash_count):
         list_mask.append(folder_all_mask)
 
 
-def load_image(image_file):
-	img = Image.open(image_file)
-	return img
+def _assert_image_shapes_equal(org_img: np.ndarray, pred_img: np.ndarray, metric: str):
+    # shape of the image should be like this (rows, cols, bands)
+    # Please note that: The interpretation of a 3-dimension array read from rasterio is: (bands, rows, columns) while
+    # image processing software like scikit-image, pillow and matplotlib are generally ordered: (rows, columns, bands)
+    # in order efficiently swap the axis order one can use reshape_as_raster, reshape_as_image from rasterio.plot
+    msg = (
+        f"Cannot calculate {metric}. Input shapes not identical. y_true shape ="
+        f"{str(org_img.shape)}, y_pred shape = {str(pred_img.shape)}"
+    )
 
-def azure_result(image_name, image):
-    img = Image.open(image)
-    img2 = img.crop((bbox[-1][0], bbox[-1][1], bbox[-1][4], bbox[-1][5]))
+    assert org_img.shape == pred_img.shape, msg
 
-def main():
-  st.title('Detecting Pathologies Through Computer Vision in Ultrasound')
-  image = read_image('image')
-  image = smart_crop(image)
-  image.show()
 
-if __name__ == '__main__':  
-    main()
+def rmse(org_img: np.ndarray, pred_img: np.ndarray, max_p: int = 4095) -> float:
+    """
+    Root Mean Squared Error
+    Calculated individually for all bands, then averaged
+    """
+    _assert_image_shapes_equal(org_img, pred_img, "RMSE")
 
-    # uploaded_files = st.file_uploader("Choose a Image file", accept_multiple_files=True)
-    # for uploaded_file in uploaded_files:
-    #     bytes_data = uploaded_file.read()
-    #     st.image(bytes_data, caption='Load image')
+    rmse_bands = []
+    
+    for i in range(org_img.shape[2]):
+        dif = np.subtract(org_img[:, :, i], pred_img[:, :, i])
+        m = np.mean(np.square(dif / max_p))
+        s = np.sqrt(m)
+        rmse_bands.append(s)
 
-    #     st.image(smart_crop(bytes_data), caption = "crop image")
+    return np.mean(rmse_bands)
 
-    #     image = Image.fromarray(uploaded_file.read())
-    #     #image = Image.open(uploaded_file.read())
-    #     image = smart_crop(image)
-    #     st.image(image, caption = "crop image")
+
+def read_image(path: str):
+    return cv2.imread(path,cv2.IMREAD_COLOR)
+
+
+def evaluation(org_img_path: str, pred_img_path: str):
+    org_img = read_image(org_img_path)
+    pred_img = read_image(pred_img_path)
+    np.seterr(divide = 'ignore') 
+    
+    width, height = 100,100
+    dim = (width, height)
+  
+# resize image
+    resized_1 = cv2.resize(org_img, dim, interpolation = cv2.INTER_AREA)
+    resized_2 = cv2.resize(pred_img, dim, interpolation = cv2.INTER_AREA)
+
+    out_value = float(rmse(resized_1, resized_2))
+    output = out_value
+    #print(output)
+    return output
+
+def evaluation_(org_img_path: str, pred_img):
+    org_img = read_image(org_img_path)
+    np.seterr(divide = 'ignore') 
+    
+    width, height = 100,100
+    dim = (width, height)
+  
+# resize image
+    resized_1 = cv2.resize(org_img, dim, interpolation = cv2.INTER_AREA)
+    #resized_2 = cv2.resize(pred_img, dim, interpolation = cv2.INTER_AREA)
+
+    out_value = float(rmse(resized_1, pred_img))
+    output = out_value
+    #print(output)
+    return output
+
+# def rotate_img(path: str):
+#   img = cv2.imread(path)
+#   out=cv2.transpose(img)
+#   out=cv2.flip(out,flipCode=90)
+#   width, height = 100,100
+#   dim = (width, height)
+#   out=cv2.transpose(img)
+#   out=cv2.flip(out,flipCode=0)
+#   resized = cv2.resize(out, dim, interpolation = cv2.INTER_AREA)
+#   cv2.imwrite("rotated_90.jpg", resized) 
+#   return(resized)
+
+
+result = (evaluation("/content/1.jpg","/content/_0101_01_l.png"))
+print(result)
