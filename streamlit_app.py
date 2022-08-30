@@ -192,6 +192,16 @@ def enhance_details(img):
     hdr = cv2.detailEnhance(img, sigma_s=12, sigma_r=0.15)
     return hdr
 
+def resize_d(img):
+    width, height = 100,100
+    dim = (width, height)
+    res = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
+    return res
+
+def check_res_rsme(org_img,pred_img):
+    out_value = float(rmse(org_img, pred_img))
+    return out_value
+
 
 def main_loop():
     st.title("OpenCV Demo App")
@@ -213,8 +223,8 @@ def main_loop():
     new_imamge = np.array(original_image)
 
 
-    processed_image = evaluation_(original_image,new_imamge)
-    processed_image = evaluation_(processed_image, new_imamge)
+    processed_image = resize_d(original_image,new_imamge)
+    #processed_image = evaluation_(processed_image, new_imamge)
 
     if apply_enhancement_filter:
         processed_image = enhance_details(processed_image)
