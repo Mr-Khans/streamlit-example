@@ -150,18 +150,18 @@ def evaluation(org_img_path: str, pred_img_path: str):
     #print(output)
     return output
 
-def evaluation_(org_img_path: str, pred_img):
-    org_img = read_image(org_img_path)
+def evaluation_(org_img, pred_img):
+
     np.seterr(divide = 'ignore') 
     
     width, height = 100,100
     dim = (width, height)
   
 # resize image
-    resized_1 = cv2.resize(org_img, dim, interpolation = cv2.INTER_AREA)
+    #resized_1 = cv2.resize(org_img, dim, interpolation = cv2.INTER_AREA)
     #resized_2 = cv2.resize(pred_img, dim, interpolation = cv2.INTER_AREA)
 
-    out_value = float(rmse(resized_1, pred_img))
+    out_value = float(rmse(org_img, pred_img))
     output = out_value
     #print(output)
     return output
@@ -210,7 +210,7 @@ class FileUpload(object):
         content = file.getvalue()
         if isinstance(file, BytesIO):
             show_file.image(file)
-        file.close()
+            st.write(evaluation_(file,file))
  
  
 if __name__ ==  "__main__":
