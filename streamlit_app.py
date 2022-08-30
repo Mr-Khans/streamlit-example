@@ -137,30 +137,23 @@ def evaluation(org_img_path: str, pred_img_path: str):
     org_img = read_image(org_img_path)
     pred_img = read_image(pred_img_path)
     np.seterr(divide = 'ignore') 
-    
     width, height = 100,100
     dim = (width, height)
-  
 # resize image
     resized_1 = cv2.resize(org_img, dim, interpolation = cv2.INTER_AREA)
     resized_2 = cv2.resize(pred_img, dim, interpolation = cv2.INTER_AREA)
-
     out_value = float(rmse(resized_1, resized_2))
     output = out_value
     #print(output)
     return output
 
 def evaluation_(org_img, pred_img):
-
     np.seterr(divide = 'ignore') 
-    
     width, height = 100,100
     dim = (width, height)
-  
 # resize image
     #resized_1 = cv2.resize(org_img, dim, interpolation = cv2.INTER_AREA)
     #resized_2 = cv2.resize(pred_img, dim, interpolation = cv2.INTER_AREA)
-
     out_value = float(rmse(org_img, pred_img))
     output = out_value
     #print(output)
@@ -212,6 +205,8 @@ def main_loop():
 
     original_image = Image.open(image_file)
     original_image = np.array(original_image)
+    st.text("Result RMSE")
+    st.text(float(evaluation_(original_image,original_image)))
 
     processed_image = blur_image(original_image, blur_rate)
     processed_image = brighten_image(processed_image, brightness_amount)
