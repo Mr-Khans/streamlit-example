@@ -12,7 +12,9 @@ import numpy as np
 from skimage.metrics import structural_similarity
 import phasepack.phasecong as pc
 import rasterio
-
+from enum import Enum
+from io import BytesIO, StringIO
+from typing import Union
 
 
 """
@@ -179,5 +181,41 @@ def evaluation_(org_img_path: str, pred_img):
 
 #result = (evaluation("/content/1.jpg","/content/_0101_01_l.png"))
 #print(result)
-
-print("hello world")
+STYLE = """
+<style>
+img {
+    max-width: 100%;
+}
+</style>
+"""
+ 
+ 
+class FileUpload(object):
+ 
+    def __init__(self):
+        self.fileTypes = ["csv", "png", "jpg"]
+ 
+    def run(self):
+        """
+        Upload File on Streamlit Code
+        :return:
+        """
+        st.info(__doc__)
+        st.markdown(STYLE, unsafe_allow_html=True)
+        file = st.file_uploader("Upload file", type=self.fileTypes)
+        show_file = st.empty()
+        if not file:
+            show_file.info("Please upload a file of type: " + ", ".join(["csv", "png", "jpg"]))
+            return
+        content = file.getvalue()
+        if isinstance(file, BytesIO):
+            show_file.image(file)
+        else:
+            data = pd.read_csv(file)
+            st.dataframe(data.head(10))
+        file.close()
+ 
+ 
+if __name__ ==  "__main__":
+    helper = FileUpload()
+    helper.run()
