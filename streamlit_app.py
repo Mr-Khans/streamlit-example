@@ -218,7 +218,9 @@ def main_loop():
 
     original_image = Image.open(image_file)
     new_imamge = original_image
-    processed_image = resize_d(original_image,new_imamge)
+    processed_image = check_res_rsme(original_image,new_imamge)
+    st.text("Original Image vs Processed Image")
+    st.image([original_image, processed_image])
     #st.text("Result RMSE")
     #st.text(float(evaluation(image_file,image_file)))
     original_image = np.array(original_image)
