@@ -210,9 +210,6 @@ class FileUpload(object):
         content = file.getvalue()
         if isinstance(file, BytesIO):
             show_file.image(file)
-        else:
-            data = pd.read_csv(file)
-            st.dataframe(data.head(10))
         file.close()
  
  
