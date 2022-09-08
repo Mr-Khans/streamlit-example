@@ -104,6 +104,7 @@ if st.button('Clear cache'):
     # with st.form("my-form", clear_on_submit=True):
     #     file = st.file_uploader("FILE UPLOADER")
     #     submitted = st.form_submit_button("UPLOAD!")
+    uploadFile,uploadFile_ = None,None
     #print()
 else:
     st.write('PLS press F5')
