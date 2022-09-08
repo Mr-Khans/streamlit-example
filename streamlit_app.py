@@ -96,4 +96,4 @@ else:
     st.write("Make sure you image is in JPG/PNG Format.")
 
 
-st.write(image_diff(img_1, img_2))
+st.write(image_diff(uploadFile, uploadFile_))
