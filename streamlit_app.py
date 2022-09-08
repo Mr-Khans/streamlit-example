@@ -38,16 +38,12 @@ def load_image(img):
 def extract(file):
   file = Image.open(file).convert('L').resize(IMAGE_SHAPE)
   #display(file)
-
   file = np.stack((file,)*3, axis=-1)
-
   file = np.array(file)/255.0
-
   embedding = model.predict(file[np.newaxis, ...])
   #print(embedding)
   vgg16_feature_np = np.array(embedding)
   flattended_feature = vgg16_feature_np.flatten()
-
   #print(len(flattended_feature))
   #print(flattended_feature)
   #print('-----------')
@@ -92,7 +88,7 @@ if uploadFile_ is not None:
     # Perform your Manupilations (In my Case applying Filters)
     #img_2 = load_image(uploadFile_)
     #st.image(img_2)
-    st.write("Image Uploaded Successfully")
+    st.write("DATASET Uploaded Successfully")
 else:
     st.write("Make sure you image is in JPG/PNG/JPEG Format.")
 
@@ -101,9 +97,9 @@ if st.button('Result'):
     st.write(len(uploadFile_))
     #for i in range(len(uploadFile_)):
     for i in range(len(uploadFile_)):
-        file = uploadFile_[i]
-        file.clear
-        st.write(str(uploadFile_.name),": ", str(image_diff(uploadFile, file)))
+         #= uploadFile_[i]
+        
+        st.write(str(uploadFile_.name),": ", str(image_diff(uploadFile, uploadFile_[0])))
 else:
     st.write('LOAD TWO IMAGES')
 
