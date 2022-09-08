@@ -93,6 +93,9 @@ if uploadFile_ is not None:
 else:
     st.write("Make sure you image is in JPG/PNG/JPEG Format.")
 
+
+
+
 if st.button('Result'):
     
         #st.write(str(uploadFile_))
@@ -100,8 +103,8 @@ if st.button('Result'):
     #for i in range(len(uploadFile_)):
         #for i in range(0, len(uploadFile_)):
          #= uploadFile_[i]
-        
-    st.write(str(uploadFile_.name),": ", str(image_diff(uploadFile, uploadFile_)))
+    for up_data in uploadFile_:
+        st.write(str(uploadFile_.name),": ", str(image_diff(uploadFile, up_data)))
 else:
     st.write('LOAD TWO IMAGES')
 
