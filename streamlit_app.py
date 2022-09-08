@@ -4,7 +4,7 @@ from PIL import Image
 import numpy as np 
 import streamlit as st 
 import tensorflow as tf
-
+import pandas as pd
 import tensorflow_hub as hub
 import numpy as np
 import matplotlib.pyplot as plt
@@ -33,6 +33,11 @@ def load_image(img):
     im = Image.open(img).convert('L').resize(IMAGE_SHAPE)
     image = np.array(im)
     return image
+
+def file_selector(folder_path='.'):
+    filenames = os.listdir(folder_path)
+    selected_filename = st.selectbox('Select a file', filenames)
+    return os.path.join(folder_path, selected_filename)
 
 #def embedding for image
 def extract(file):
@@ -69,7 +74,7 @@ def image_diff(pic_1, pic_2):
 st.header("Tast same mask")
 # Uploading the File to the Page
 uploadFile = st.file_uploader(label="Upload mask for test", type=['jpg', 'png', 'jpeg'])
-uploadFile_ = st.file_uploader(label="Upload mask in dataset", accept_multiple_files=True, type=['jpg', 'png', 'jpeg'])
+uploadFile_ = st.file_uploader(label="Upload mask in dataset", accept_multiple_files=False, type=['jpg', 'png', 'jpeg'])
 #uploadFile_ = st.file_uploader(label="Upload mask in dataset",  type=['jpg', 'png', 'jpeg'])
 
 # Checking the Format of the page
@@ -93,19 +98,22 @@ if uploadFile_ is not None:
 else:
     st.write("Make sure you image is in JPG/PNG/JPEG Format.")
 
-
+lis_name = []
+lis_res = []
 
 
 if st.button('Result'):
-    
-        #st.write(str(uploadFile_))
-        #st.write(len(uploadFile_))
-    #for i in range(len(uploadFile_)):
-        #for i in range(0, len(uploadFile_)):
-         #= uploadFile_[i]
-    for up_data in uploadFile_:
-        bytes_data = up_data.read()
-        st.write(str(uploadFile_.name),": ", str(image_diff(uploadFile, bytes_data)))
+    for i in range(len(uploadFile_)):
+        name = uploadFile_[i].name
+        result = image_diff(uploadFile, uploadFile_[i])
+        lis_name.append(name)
+        lis_res.append(result)
+    st.write(
+        pd.DataFrame({
+      'Name': lis_name,
+      'Result': lis_res
+    })
+    )
 else:
     st.write('LOAD TWO IMAGES')
 
