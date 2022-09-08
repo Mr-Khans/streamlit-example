@@ -67,7 +67,7 @@ def image_diff(pic_1, pic_2):
 st.header("Tast same mask")
 # Uploading the File to the Page
 uploadFile = st.file_uploader(label="Upload mask for test", type=['jpg', 'png', 'jpeg'])
-uploadFile_ = st.file_uploader(label="Upload mask in dataset", accept_multiple_files=True, type=['jpg', 'png', 'jpeg'])
+uploadFile_ = st.file_uploader(label="Upload mask in dataset", accept_multiple_files=False, type=['jpg', 'png', 'jpeg'])
 #uploadFile_ = st.file_uploader(label="Upload mask in dataset",  type=['jpg', 'png', 'jpeg'])
 
 # Checking the Format of the page
