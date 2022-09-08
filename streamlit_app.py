@@ -67,6 +67,7 @@ def image_diff(pic_1, pic_2):
     #   plt.show()
     #   print(folder_all_mask, float(dc))
 st.header("Tast same mask")
+static_store = get_static_store()
 # Uploading the File to the Page
 uploadFile = st.file_uploader(label="Upload mask for test", type=['jpg', 'png', 'jpeg'])
 uploadFile_ = st.file_uploader(label="Upload mask in dataset", accept_multiple_files=False, type=['jpg', 'png', 'jpeg'])
@@ -86,12 +87,18 @@ else:
 # Checking the Format of the page
 if uploadFile_ is not None:
     #for i in range()
+    value = uploadFile_.getvalue()
+
+    if not value in static_store.values():
+        static_store[uploadFile_] = value
     # Perform your Manupilations (In my Case applying Filters)
     #img_2 = load_image(uploadFile_)
     #st.image(img_2)
     st.write("DATASET Uploaded Successfully")
 else:
     st.write("Make sure you image is in JPG/PNG/JPEG Format.")
+    static_store.clear()  # Hack to clear list if the user clears the cache and reloads the page
+    st.info("Upload one or more `.py` files.")
 
 if st.button('Result'):
     #for up_file in uploadFile_:
@@ -105,3 +112,10 @@ if st.button('Result'):
 else:
     st.write('LOAD TWO IMAGES')
 
+if st.button("Clear file list"):
+    static_store.clear()
+if st.checkbox("Show file list?", True):
+    st.write(list(static_store.keys()))
+if st.checkbox("Show content of files?"):
+    for value in static_store.values():
+        st.code(value)
