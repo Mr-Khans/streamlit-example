@@ -30,7 +30,7 @@ model = tf.keras.Sequential([layer])
 
 # Function to Read and Manupilate Images
 def load_image(img):
-    im = Image.open(img)
+    im = Image.open(img).convert('L').resize(IMAGE_SHAPE)
     image = np.array(im)
     return image
 
@@ -96,3 +96,4 @@ else:
     st.write("Make sure you image is in JPG/PNG Format.")
 
 
+st.write(image_diff(img_1, img_2))
