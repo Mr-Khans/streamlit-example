@@ -81,7 +81,7 @@ if uploadFile is not None:
     st.image(img_1)
     st.write("Image Uploaded Successfully")
 else:
-    st.write("Make sure you image is in JPG/PNG Format.")
+    st.write("Make sure you image is in JPG/PNG/JPEG Format.")
 
 
 uploadFile_ = st.file_uploader(label="Upload mask in dataset", type=['jpg', 'png', 'jpeg'])
@@ -93,7 +93,7 @@ if uploadFile_ is not None:
     st.image(img_2)
     st.write("Image Uploaded Successfully")
 else:
-    st.write("Make sure you image is in JPG/PNG Format.")
+    st.write("Make sure you image is in JPG/PNG/JPEG Format.")
 
 
 st.write(image_diff(uploadFile, uploadFile_))
