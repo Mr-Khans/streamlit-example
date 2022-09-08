@@ -98,6 +98,7 @@ else:
 
 if st.button('Result'):
     st.write(str(uploadFile_))
+    st.write(len(uploadFile_))
     #for i in range(len(uploadFile_)):
     st.write(str(uploadFile_.name),": ", str(image_diff(uploadFile, uploadFile_)))
 else:
