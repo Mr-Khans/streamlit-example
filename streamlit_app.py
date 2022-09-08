@@ -73,18 +73,17 @@ def image_diff(pic_1, pic_2):
 st.header("Tast same mask")
 # Uploading the File to the Page
 uploadFile = st.file_uploader(label="Upload mask for test", type=['jpg', 'png', 'jpeg'])
+uploadFile_ = st.file_uploader(label="Upload mask in dataset", type=['jpg', 'png', 'jpeg'])
 
 # Checking the Format of the page
 if uploadFile is not None:
+    
     # Perform your Manupilations (In my Case applying Filters)
     img_1 = load_image(uploadFile)
     st.image(img_1)
     st.write("Image Uploaded Successfully")
 else:
     st.write("Make sure you image is in JPG/PNG/JPEG Format.")
-
-
-uploadFile_ = st.file_uploader(label="Upload mask in dataset", type=['jpg', 'png', 'jpeg'])
 
 # Checking the Format of the page
 if uploadFile_ is not None:
