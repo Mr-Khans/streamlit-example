@@ -9,13 +9,25 @@ def load_image(img):
     return image
 
 # Uploading the File to the Page
-uploadFile = st.file_uploader(label="Upload image", type=['jpg', 'png', 'jpeg'])
+uploadFile = st.file_uploader(label="Upload mask for test", type=['jpg', 'png', 'jpeg'])
 
 # Checking the Format of the page
 if uploadFile is not None:
     # Perform your Manupilations (In my Case applying Filters)
-    img = load_image(uploadFile)
-    st.image(img)
+    img_1 = load_image(uploadFile)
+    st.image(img_1)
+    st.write("Image Uploaded Successfully")
+else:
+    st.write("Make sure you image is in JPG/PNG Format.")
+
+
+uploadFile_ = st.file_uploader(label="Upload mask in dataset", type=['jpg', 'png', 'jpeg'])
+
+# Checking the Format of the page
+if uploadFile_ is not None:
+    # Perform your Manupilations (In my Case applying Filters)
+    img_2 = load_image(uploadFile_)
+    st.image(img_2)
     st.write("Image Uploaded Successfully")
 else:
     st.write("Make sure you image is in JPG/PNG Format.")
