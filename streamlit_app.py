@@ -98,20 +98,14 @@ if uploadFile_ is not None:
 else:
     st.write("Make sure you image is in JPG/PNG/JPEG Format.")
 
-lis_name = []
-lis_res = []
-
 
 if st.button('Result'):
-    for file in (uploadFile_):
-        name = file.name
-        result = image_diff(uploadFile, file)
-        lis_name.append(name)
-        lis_res.append(result)
+
+    result = image_diff(uploadFile, uploadFile_)
     st.write(
         pd.DataFrame({
-      'Name': lis_name,
-      'Result': lis_res
+      'Name': [uploadFile_.name],
+      'Result': result
     })
     )
 else:
