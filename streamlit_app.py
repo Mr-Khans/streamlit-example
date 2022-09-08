@@ -1,4 +1,6 @@
 
+from streamlit import caching
+caching.clear_cache()
 
 from PIL import Image
 import numpy as np 
