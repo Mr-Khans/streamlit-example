@@ -85,6 +85,7 @@ else:
 
 # Checking the Format of the page
 if uploadFile_ is not None:
+    #for i in range()
     # Perform your Manupilations (In my Case applying Filters)
     #img_2 = load_image(uploadFile_)
     #st.image(img_2)
@@ -97,7 +98,7 @@ if st.button('Result'):
         #st.write(str(uploadFile_))
         #st.write(len(uploadFile_))
     #for i in range(len(uploadFile_)):
-        for i in range(len(uploadFile_)):
+        for i in range(0, len(uploadFile_)):
          #= uploadFile_[i]
         
             st.write(str(uploadFile_.name),": ", str(image_diff(uploadFile, up_file[i])))
