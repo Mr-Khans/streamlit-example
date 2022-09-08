@@ -94,13 +94,15 @@ else:
 
 if st.button('Result'):
 
-    st.write(str(image_diff(uploadFile, uploadFile_)))
+    st.write("File: ", str(uploadFile_.name), str(image_diff(uploadFile, uploadFile_)))
 
 else:
     st.write('LOAD TWO IMAGES')
 
 if st.button('Clear cache'):
     st.legacy_caching.caching.clear_cache()
+    uploadFile_.clear()
+    uploadFile.clear()
 else:
     st.write('PLS press F5')
 
