@@ -97,7 +97,7 @@ if st.button('Result'):
     result = image_diff(uploadFile, uploadFile_)
     st.write("File: ", str(uploadFile_.name), str(result))
     st.write(str(uploadFile_))
-    if MIN_VALUE < result:
+    if MIN_VALUE > result:
         st.write("GOOD MASK!!!!: ", str(result))
     else:
         st.write("NEED NEW MASK :", str(result))
