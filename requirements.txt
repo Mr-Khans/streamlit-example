@@ -2,8 +2,5 @@ altair
 scipy
 streamlit
 opencv-contrib-python-headless
-phasepack
-matplotlib
 scikit-image
-rasterio
 pillow
