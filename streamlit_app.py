@@ -94,7 +94,7 @@ else:
 
 if st.button('Result'):
 
-    st.write(image_diff(uploadFile, uploadFile_))
+    st.write(str(image_diff(uploadFile, uploadFile_)))
 
 else:
     st.write('LOAD TWO IMAGES')
