@@ -1,6 +1,5 @@
 
-from streamlit import caching
-caching.clear_cache()
+
 
 from PIL import Image
 import numpy as np 
@@ -15,7 +14,7 @@ import os
 import glob
 import cv2
 
-
+st.legacy_caching.caching.clear_cache()
 
 #init paremeters
 metric = 'cosine'
