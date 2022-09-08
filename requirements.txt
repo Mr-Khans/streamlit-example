@@ -1,7 +1,7 @@
 altair
 scipy
 tensorflow_hub
-streamlit
+streamlit==1.4.0
 opencv-contrib-python-headless
 scikit-image
 tensorflow==2.7.0
