@@ -1,3 +1,5 @@
+!pip install --upgrade tensorflow_hub
+
 from PIL import Image
 import numpy as np 
 import streamlit as st 
