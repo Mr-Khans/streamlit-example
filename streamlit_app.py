@@ -92,8 +92,8 @@ else:
 if uploadFile_ is not None:
     #for i in range()
     # Perform your Manupilations (In my Case applying Filters)
-    img_2 = load_image(uploadFile_)
-    st.image(img_2)
+    # img_2 = load_image(uploadFile_)
+    # st.image(img_2)
     st.write("DATASET Uploaded Successfully")
 else:
     st.write("Make sure you image is in JPG/PNG/JPEG Format.")
