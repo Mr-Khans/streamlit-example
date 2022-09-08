@@ -100,7 +100,7 @@ if st.button('Result'):
         for i in range(len(uploadFile_)):
          #= uploadFile_[i]
         
-            st.write(str(uploadFile_.name),": ", str(image_diff(uploadFile, up_file)))
+            st.write(str(uploadFile_.name),": ", str(image_diff(uploadFile, up_file[i])))
 else:
     st.write('LOAD TWO IMAGES')
 
