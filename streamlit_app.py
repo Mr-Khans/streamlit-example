@@ -54,6 +54,23 @@ def extract(file):
   return flattended_feature
 
 
+def image_diff(pic_1, pic_2):
+    img_1 = extract(pic_1)
+    #org_img = cv2.imread(path_mask)
+    #for folder_all_mask in glob.glob(mask_path_xl):
+    img_2 = extract(pic_2)
+    #second_img = cv2.imread(folder_all_mask)
+    dc = distance.cdist([img_1], [img_2], metric)[0]
+      #list_score.append(float(dc))
+      #list_mask.append(folder_all_mask)
+    return dc
+    #   plt.subplot(121)
+    #   plt.imshow(org_img)
+    #   plt.subplot(122)
+    #   plt.imshow(second_img)
+    #   plt.show()
+    #   print(folder_all_mask, float(dc))
+
 # Uploading the File to the Page
 uploadFile = st.file_uploader(label="Upload mask for test", type=['jpg', 'png', 'jpeg'])
 
