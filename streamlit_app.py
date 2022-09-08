@@ -100,7 +100,7 @@ if st.button('Result'):
     if MIN_VALUE > result:
         st.write("GOOD MASK!!!!: ", str(result))
     else:
-        st.write("NEED NEW MASK :", str(result))
+        st.write("NEED NEW MASK: ", str(result))
 
 #proof
 else:
