@@ -1,4 +1,4 @@
-
+from typing import Dict
 
 from PIL import Image
 import numpy as np 
@@ -33,6 +33,11 @@ def load_image(img):
     im = Image.open(img).convert('L').resize(IMAGE_SHAPE)
     image = np.array(im)
     return image
+
+@st.cache(allow_output_mutation=True)
+def get_static_store() -> Dict:
+    """This dictionary is initialized once and can be used to store the files uploaded"""
+    return {}
 
 #def embedding for image
 def extract(file):
