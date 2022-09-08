@@ -34,6 +34,26 @@ def load_image(img):
     image = np.array(im)
     return image
 
+#def embedding for image
+def extract(file):
+  file = Image.open(file).convert('L').resize(IMAGE_SHAPE)
+  #display(file)
+
+  file = np.stack((file,)*3, axis=-1)
+
+  file = np.array(file)/255.0
+
+  embedding = model.predict(file[np.newaxis, ...])
+  #print(embedding)
+  vgg16_feature_np = np.array(embedding)
+  flattended_feature = vgg16_feature_np.flatten()
+
+  #print(len(flattended_feature))
+  #print(flattended_feature)
+  #print('-----------')
+  return flattended_feature
+
+
 # Uploading the File to the Page
 uploadFile = st.file_uploader(label="Upload mask for test", type=['jpg', 'png', 'jpeg'])
 
