@@ -1,242 +1,196 @@
-# from ast import If, main
-from collections import namedtuple
-import altair as alt
 import streamlit as st
-import os
-import glob
-import cv2
 from PIL import Image
-import matplotlib.pyplot as plt
-import math
+import cv2 
 import numpy as np
-from skimage.metrics import structural_similarity
-import phasepack.phasecong as pc
-import rasterio
-from enum import Enum
-from io import BytesIO, StringIO
-from typing import Union
 
 
-"""
-# Welcome to Streamlit!
 
-## This code about find same images
-"""
+def main():
 
-
-list_score = []
-list_mask = []
-list_all = []
-
-def smart_crop(img):
-    gry = cv2.cvtColor(img, cv2.IMREAD_GRAYSCALE)
-    blur = cv2.GaussianBlur(gry,(3,3), 0)
-    th = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY)[1]
-    coords = cv2.findNonZero(th)
-    x,y,w,h = cv2.boundingRect(coords)
-    image = cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 0)
-    crop_img = image[y:y+h, x:x+w]
-    crop = Image.fromarray(crop_img)
-    crop = crop.convert("RGB")
-    w, h = crop.size
-    print(str(path))
-    result_resize = float(h/w)
-    if result_resize < 1.675:
-        up_points = (400,400)
-        crop_imag = crop.resize(up_points)
-    else:
-        up_points = (200,400)
-        crop_imag = crop.resize(up_points)
-    return crop_imag
-
-def path_cut(path_to_file):
-  path_name = os.path.normpath(path_to_file)
-  text_path = str(path_name.split(os.sep)[3] + "_" + path_name.split(os.sep)[4])
-  return text_path
-
-
-def get_img(image, size=(100, 100)):
-    img = Image.open(image)
-    if size:
-        img = img.resize(size)
-    temp = BytesIO()
-    img.save(temp, format="png")
-    temp.seek(0)
-    return Image.open(temp)
-
-
-def read_image(name):
-  image = st.file_uploader("Upload an "+ name, type=["png", "jpg", "jpeg"])
-  if image:
-    im = Image.open(image)
-    im.filename = image.name
-    return im
-
-
-def hash_check_4(path_1,path_2,hash_size):
-    img1 = smart_crop(path_1)
-    img2 = smart_crop(path_2)
-
-
-    hash_d = imagehash.dhash(img1,hash_size)
-    otherhash_d = imagehash.dhash(img2,hash_size)
-    delta_4 = hash_d -  otherhash_d
-
-    hash_dhash_vertical = imagehash.dhash_vertical(img1,hash_size)
-    otherhash_dhash_vertical = imagehash.dhash_vertical(img2,hash_size)
-    delta_5 = hash_dhash_vertical -  otherhash_dhash_vertical
-
-    av = ( delta_5 + delta_4)/2 
-    print("AVG: ",av)
-    return av, delta_5, delta_4
-
-def check_masks_l(path_one_mask, path_all_mask,hash_count):
-    for folder_all_mask in glob.glob(path_all_mask):
-        
-        score , delta_5, delta_4 = hash_check_4(path_one_mask, folder_all_mask,hash_count)
-        list_score.append(score)
-        list_mask.append(folder_all_mask)
-
-
-def _assert_image_shapes_equal(org_img: np.ndarray, pred_img: np.ndarray, metric: str):
-    # shape of the image should be like this (rows, cols, bands)
-    # Please note that: The interpretation of a 3-dimension array read from rasterio is: (bands, rows, columns) while
-    # image processing software like scikit-image, pillow and matplotlib are generally ordered: (rows, columns, bands)
-    # in order efficiently swap the axis order one can use reshape_as_raster, reshape_as_image from rasterio.plot
-    msg = (
-        f"Cannot calculate {metric}. Input shapes not identical. y_true shape ="
-        f"{str(org_img.shape)}, y_pred shape = {str(pred_img.shape)}"
+    selected_box = st.sidebar.selectbox(
+    'Choose one of the following',
+    ('Welcome','Image Processing', 'Video', 'Face Detection', 'Feature Detection', 'Object Detection')
     )
-
-    assert org_img.shape == pred_img.shape, msg
-
-
-def rmse(org_img: np.ndarray, pred_img: np.ndarray, max_p: int = 4095) -> float:
-    """
-    Root Mean Squared Error
-    Calculated individually for all bands, then averaged
-    """
-    _assert_image_shapes_equal(org_img, pred_img, "RMSE")
-
-    rmse_bands = []
     
-    for i in range(org_img.shape[2]):
-        dif = np.subtract(org_img[:, :, i], pred_img[:, :, i])
-        m = np.mean(np.square(dif / max_p))
-        s = np.sqrt(m)
-        rmse_bands.append(s)
+    if selected_box == 'Welcome':
+        welcome() 
+    if selected_box == 'Image Processing':
+        photo()
+    if selected_box == 'Video':
+        video()
+    if selected_box == 'Face Detection':
+        face_detection()
+    if selected_box == 'Feature Detection':
+        feature_detection()
+    if selected_box == 'Object Detection':
+        object_detection() 
+ 
 
-    return np.mean(rmse_bands)
-
-
-def read_image(path: str):
-    return Image.open(path)
-
-
-def evaluation(org_img_path: str, pred_img_path: str):
-    org_img = read_image(org_img_path)
-    pred_img = read_image(pred_img_path)
-    np.seterr(divide = 'ignore') 
-    width, height = 100,100
-    dim = (width, height)
-# resize image
-
-    res_1 = org_img.resize((100,100), Image.ANTIALIAS)
-    res_2 = pred_img.resize((100,100), Image.ANTIALIAS)
-    # resized_1 = cv2.resize(org_img, dim, interpolation = cv2.INTER_AREA)
-    # resized_2 = cv2.resize(pred_img, dim, interpolation = cv2.INTER_AREA)
-    out_value = float(rmse(res_1, res_2))
-    output = out_value
-    #print(output)
-    return output
-
-def evaluation_(org_img, pred_img):
-    np.seterr(divide = 'ignore') 
-    width, height = 100,100
-    dim = (width, height)
-# resize image
-    resized_1 = cv2.resize(org_img, dim, interpolation = cv2.INTER_AREA)
-    resized_2 = cv2.resize(pred_img, dim, interpolation = cv2.INTER_AREA)
-    out_value = float(rmse(org_img, pred_img))
-    output = out_value
-    #print(output)
-    return output
-
-# def rotate_img(path: str):
-#   img = cv2.imread(path)
-#   out=cv2.transpose(img)
-#   out=cv2.flip(out,flipCode=90)
-#   width, height = 100,100
-#   dim = (width, height)
-#   out=cv2.transpose(img)
-#   out=cv2.flip(out,flipCode=0)
-#   resized = cv2.resize(out, dim, interpolation = cv2.INTER_AREA)
-#   cv2.imwrite("rotated_90.jpg", resized) 
-#   return(resized)
+def welcome():
+    
+    st.title('Image Processing using Streamlit')
+    
+    st.subheader('A simple app that shows different image processing algorithms. You can choose the options'
+             + ' from the left. I have implemented only a few to show how it works on Streamlit. ' + 
+             'You are free to add stuff to this app.')
+    
+    st.image('hackershrine.jpg',use_column_width=True)
 
 
-#result = (evaluation("/content/1.jpg","/content/_0101_01_l.png"))
-#print(result)
+def load_image(filename):
+    image = cv2.imread(filename)
+    return image
+ 
+def photo():
 
-def brighten_image(image, amount):
-    img_bright = cv2.convertScaleAbs(image, beta=amount)
-    return img_bright
+    st.header("Thresholding, Edge Detection and Contours")
+    
+    if st.button('See Original Image of Tom'):
+        
+        original = Image.open('tom.jpg')
+        st.image(original, use_column_width=True)
+        
+    image = cv2.imread('tom.jpg')
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    
+    x = st.slider('Change Threshold value',min_value = 50,max_value = 255)  
 
+    ret,thresh1 = cv2.threshold(image,x,255,cv2.THRESH_BINARY)
+    thresh1 = thresh1.astype(np.float64)
+    st.image(thresh1, use_column_width=True,clamp = True)
+    
+    st.text("Bar Chart of the image")
+    histr = cv2.calcHist([image],[0],None,[256],[0,256])
+    st.bar_chart(histr)
+    
+    st.text("Press the button below to view Canny Edge Detection Technique")
+    if st.button('Canny Edge Detector'):
+        image = load_image("jerry.jpg")
+        edges = cv2.Canny(image,50,300)
+        cv2.imwrite('edges.jpg',edges)
+        st.image(edges,use_column_width=True,clamp=True)
+      
+    y = st.slider('Change Value to increase or decrease contours',min_value = 50,max_value = 255)     
+    
+    if st.button('Contours'):
+        im = load_image("jerry1.jpg")
+          
+        imgray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
+        ret,thresh = cv2.threshold(imgray,y,255,0)
+        image, contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+        
+        img = cv2.drawContours(im, contours, -1, (0,255,0), 3)
+ 
+        
+        st.image(thresh, use_column_width=True, clamp = True)
+        st.image(img, use_column_width=True, clamp = True)
+         
 
-def blur_image(image, amount):
-    blur_img = cv2.GaussianBlur(image, (11, 11), amount)
-    return blur_img
+    
+def video():
+    uploaded_file = st.file_uploader("Choose a video file to play")
+    if uploaded_file is not None:
+         bytes_data = uploaded_file.read()
+ 
+         st.video(bytes_data)
+         
+    video_file = open('typing.mp4', 'rb')
+         
+ 
+    video_bytes = video_file.read()
+    st.video(video_bytes)
+ 
 
+def face_detection():
+    
+    st.header("Face Detection using haarcascade")
+    
+    if st.button('See Original Image'):
+        
+        original = Image.open('friends.jpeg')
+        st.image(original, use_column_width=True)
+    
+    
+    image2 = cv2.imread("friends.jpeg")
 
-def enhance_details(img):
-    hdr = cv2.detailEnhance(img, sigma_s=12, sigma_r=0.15)
-    return hdr
+    face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+    faces = face_cascade.detectMultiScale(image2)
+    print(f"{len(faces)} faces detected in the image.")
+    for x, y, width, height in faces:
+        cv2.rectangle(image2, (x, y), (x + width, y + height), color=(255, 0, 0), thickness=2)
+    
+    cv2.imwrite("faces.jpg", image2)
+    
+    st.image(image2, use_column_width=True,clamp = True)
+ 
 
-def resize_d(img):
-    width, height = 100,100
-    dim = (width, height)
-    res = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
-    return res
+def feature_detection():
+    st.subheader('Feature Detection in images')
+    st.write("SIFT")
+    image = load_image("tom1.jpg")
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    sift = cv2.xfeatures2d.SIFT_create()    
+    keypoints = sift.detect(gray, None)
+     
+    st.write("Number of keypoints Detected: ",len(keypoints))
+    image = cv2.drawKeypoints(image, keypoints, None, flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+    st.image(image, use_column_width=True,clamp = True)
+    
+    
+    st.write("FAST")
+    image_fast = load_image("tom1.jpg")
+    gray = cv2.cvtColor(image_fast, cv2.COLOR_BGR2GRAY)
+    fast = cv2.FastFeatureDetector_create()
+    keypoints = fast.detect(gray, None)
+    st.write("Number of keypoints Detected: ",len(keypoints))
+    image_  = cv2.drawKeypoints(image_fast, keypoints, None, flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+    st.image(image_, use_column_width=True,clamp = True)
 
-def check_res_rsme(org_img,pred_img):
-    out_value = float(rmse(org_img, pred_img))
-    return out_value
-
-
-def main_loop():
-    st.title("OpenCV Demo App")
-    st.subheader("This app allows you to play with Image filters!")
-    st.text("We use OpenCV and Streamlit for this demo")
-
-    blur_rate = st.sidebar.slider("Blurring", min_value=0.5, max_value=3.5)
-    brightness_amount = st.sidebar.slider("Brightness", min_value=-50, max_value=50, value=0)
-    apply_enhancement_filter = st.sidebar.checkbox('Enhance Details')
-
-    image_file = st.file_uploader("Upload Your Image", type=['jpg', 'png', 'jpeg'])
-    if not image_file:
-        return None
-
-    original_image = Image.open(image_file)
-    new_imamge = original_image
-    processed_image = check_res_rsme(original_image,new_imamge)
-    st.text("Original Image vs Processed Image")
-    st.image([original_image, processed_image])
-    #st.text("Result RMSE")
-    #st.text(float(evaluation(image_file,image_file)))
-    original_image = np.array(original_image)
-    new_imamge = np.array(original_image)
-
-
-    processed_image = resize_d(original_image,new_imamge)
-    #processed_image = evaluation_(processed_image, new_imamge)
-
-    if apply_enhancement_filter:
-        processed_image = enhance_details(processed_image)
-
-    st.text("Original Image vs Processed Image")
-    st.image([original_image, processed_image])
-
-
-
-if __name__ == '__main__':
-    main_loop()
+    
+    
+def object_detection():
+    
+    st.header('Object Detection')
+    st.subheader("Object Detection is done using different haarcascade files.")
+    img = load_image("clock.jpg")
+    img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) 
+    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
+    
+    clock = cv2.CascadeClassifier('haarcascade_wallclock.xml')  
+    found = clock.detectMultiScale(img_gray,  
+                                   minSize =(20, 20)) 
+    amount_found = len(found)
+    st.text("Detecting a clock from an image")
+    if amount_found != 0:  
+        for (x, y, width, height) in found:
+     
+            cv2.rectangle(img_rgb, (x, y),  
+                          (x + height, y + width),  
+                          (0, 255, 0), 5) 
+    st.image(img_rgb, use_column_width=True,clamp = True)
+    
+    
+    st.text("Detecting eyes from an image")
+    
+    image = load_image("eyes.jpg")
+    img_gray_ = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) 
+    img_rgb_ = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) 
+        
+    eye = cv2.CascadeClassifier('haarcascade_eye.xml')  
+    found = eye.detectMultiScale(img_gray_,  
+                                       minSize =(20, 20)) 
+    amount_found_ = len(found)
+        
+    if amount_found_ != 0:  
+        for (x, y, width, height) in found:
+         
+            cv2.rectangle(img_rgb_, (x, y),  
+                              (x + height, y + width),  
+                              (0, 255, 0), 5) 
+        st.image(img_rgb_, use_column_width=True,clamp = True)
+    
+    
+    
+    
+if __name__ == "__main__":
+    main()
