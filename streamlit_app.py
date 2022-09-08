@@ -70,7 +70,7 @@ def image_diff(pic_1, pic_2):
     #   plt.imshow(second_img)
     #   plt.show()
     #   print(folder_all_mask, float(dc))
-
+st.header("Tast same mask")
 # Uploading the File to the Page
 uploadFile = st.file_uploader(label="Upload mask for test", type=['jpg', 'png', 'jpeg'])
 
