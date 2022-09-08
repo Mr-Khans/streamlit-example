@@ -97,9 +97,9 @@ else:
     st.write("Make sure you image is in JPG/PNG/JPEG Format.")
 
 if st.button('Result'):
-    #st.write(type(uploadFile_))
-    for i in range(len(uploadFile_)):
-        st.write(str(uploadFile_.name),": ", str(image_diff(uploadFile, uploadFile_[i])))
+    st.write(str(uploadFile_))
+    #for i in range(len(uploadFile_)):
+    st.write(str(uploadFile_.name),": ", str(image_diff(uploadFile, uploadFile_)))
 else:
     st.write('LOAD TWO IMAGES')
 
