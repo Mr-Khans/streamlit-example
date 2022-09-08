@@ -97,4 +97,4 @@ else:
 
 
 
-st.write(image_diff(uploadFile, uploadFile_))
+    st.write(image_diff(uploadFile, uploadFile_))
