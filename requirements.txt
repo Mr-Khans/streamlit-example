@@ -1,8 +1,8 @@
 altair
 scipy
+tensorflow_hub
 streamlit
 opencv-contrib-python-headless
 scikit-image
 tensorflow==2.7.0
-tensorflow_hub
 pillow
