@@ -4,6 +4,7 @@ from PIL import Image
 import numpy as np 
 import streamlit as st 
 import tensorflow as tf
+
 import tensorflow_hub as hub
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,6 +12,21 @@ from scipy.spatial import distance
 import os
 import glob
 import cv2
+
+
+
+#init paremeters
+metric = 'cosine'
+
+#load_model
+model_url = "https://tfhub.dev/tensorflow/efficientnet/lite0/feature-vector/2"
+
+#shape for efficientnet_lite
+IMAGE_SHAPE = (224, 224)
+
+#load layer and model
+layer = hub.KerasLayer(model_url)
+model = tf.keras.Sequential([layer])
 
 # Function to Read and Manupilate Images
 def load_image(img):
