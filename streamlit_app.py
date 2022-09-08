@@ -103,9 +103,9 @@ lis_res = []
 
 
 if st.button('Result'):
-    for i in range(len(uploadFile_)):
-        name = uploadFile_[i].name
-        result = image_diff(uploadFile, uploadFile_[i])
+    for file in (uploadFile_):
+        name = file.name
+        result = image_diff(uploadFile, file)
         lis_name.append(name)
         lis_res.append(result)
     st.write(
