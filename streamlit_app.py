@@ -77,7 +77,16 @@ uploadFile_ = st.file_uploader(label="Upload mask in dataset", type=['jpg', 'png
 
 # Checking the Format of the page
 if uploadFile is not None:
-    
+
+
+    # Checking the Format of the page
+    if uploadFile_ is not None:
+        # Perform your Manupilations (In my Case applying Filters)
+        img_2 = load_image(uploadFile_)
+        st.image(img_2)
+        st.write("Image Uploaded Successfully")
+    else:
+        st.write("Make sure you image is in JPG/PNG/JPEG Format.")
     # Perform your Manupilations (In my Case applying Filters)
     img_1 = load_image(uploadFile)
     st.image(img_1)
@@ -85,14 +94,7 @@ if uploadFile is not None:
 else:
     st.write("Make sure you image is in JPG/PNG/JPEG Format.")
 
-# Checking the Format of the page
-if uploadFile_ is not None:
-    # Perform your Manupilations (In my Case applying Filters)
-    img_2 = load_image(uploadFile_)
-    st.image(img_2)
-    st.write("Image Uploaded Successfully")
-else:
-    st.write("Make sure you image is in JPG/PNG/JPEG Format.")
+
 
 
 st.write(image_diff(uploadFile, uploadFile_))
