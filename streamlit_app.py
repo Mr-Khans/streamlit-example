@@ -1,6 +1,3 @@
-
-
-
 from PIL import Image
 import numpy as np 
 import streamlit as st 
@@ -14,7 +11,6 @@ import os
 import glob
 import cv2
 
-st.legacy_caching.caching.clear_cache()
 
 #init paremeters
 metric = 'cosine'
@@ -35,10 +31,6 @@ def load_image(img):
     image = np.array(im)
     return image
 
-def file_selector(folder_path='.'):
-    filenames = os.listdir(folder_path)
-    selected_filename = st.selectbox('Select a file', filenames)
-    return os.path.join(folder_path, selected_filename)
 
 #def embedding for image
 def extract(file):
@@ -102,13 +94,13 @@ else:
 
 if st.button('Result'):
 
-    result = image_diff(uploadFile, uploadFile_)
-    st.write(
-        pd.DataFrame({
-      'Name': [uploadFile_.name],
-      'Result': result
-    })
-    )
+    st.write(image_diff(uploadFile, uploadFile_))
+
 else:
     st.write('LOAD TWO IMAGES')
+
+if st.button('Clear cache'):
+    st.legacy_caching.caching.clear_cache()
+else:
+    st.write('PLS press F5')
 
