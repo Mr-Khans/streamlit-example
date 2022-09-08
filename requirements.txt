@@ -3,5 +3,5 @@ scipy
 streamlit
 opencv-contrib-python-headless
 scikit-image
-tensorflow
+tensorflow==2.7.0
 pillow
