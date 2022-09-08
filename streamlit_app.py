@@ -9,7 +9,7 @@ def load_image(img):
     return image
 
 # Uploading the File to the Page
-uploadFile = st.file_uploader(label="Upload image", type=['jpg', 'png'])
+uploadFile = st.file_uploader(label="Upload image", type=['jpg', 'png', 'jpeg'])
 
 # Checking the Format of the page
 if uploadFile is not None:
