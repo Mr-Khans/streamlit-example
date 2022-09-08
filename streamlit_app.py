@@ -14,7 +14,8 @@ import cv2
 
 #init paremeters
 metric = 'cosine'
-
+#accuracy - [+/- 0.01]
+MIN_VALUE = 0.212076
 #load_model
 model_url = "https://tfhub.dev/tensorflow/efficientnet/lite0/feature-vector/2"
 
@@ -93,9 +94,15 @@ else:
 
 
 if st.button('Result'):
-
-    st.write("File: ", str(uploadFile_.name), str(image_diff(uploadFile, uploadFile_)))
+    result = image_diff(uploadFile, uploadFile_)
+    st.write("File: ", str(uploadFile_.name), str(result))
     st.write(str(uploadFile_))
+    if MIN_VALUE < result:
+        st.write("GOOD MASK!!!!: ", str(result))
+    else:
+        st.write("NEED NEW MASK :", str(result))
+
+#proof
 else:
     st.write('LOAD TWO IMAGES')
 
